@@ -12,7 +12,6 @@ const Home = () => (
   <div>
     <h1>Home</h1>
     <h3>Albums</h3>
-    <p>List of inspections</p>
     <ul>
       {ALBUM_DATA.map(album => 
       <li key={album.id}>

@@ -1,22 +1,26 @@
 
 const PHOTOS = [
   {
-    id: 1,
+    id: 'sunrise in texas.jpg',
+    name: 'Sunrise in Texas',
     albumId: 'permian-1',
     src: 'https://i.pinimg.com/originals/ec/3d/84/ec3d848f6c9215ade75b97fa3fa2187a.jpg',
   },
   {
     id: 2,
+    name: 'A Long Road',
     albumId: 'permian-1',
     src: 'https://i.pinimg.com/originals/13/15/f2/1315f29209038882b3bac886cc65fd0d.jpg',
   },
   {
     id: 3,
+    name: 'Devil\'s Canyon',
     albumId: 'permian-1',
     src: 'https://scontent-lhr3-1.cdninstagram.com/vp/595c1bc743b02b6bfcfcc6bc626ded27/5C4841DC/t51.2885-15/e35/c247.0.544.544/s320x320/30855097_416875948783685_4905469057148387328_n.jpg',
   },
   {
     id: 4,
+    name: 'Purple Majesty', 
     albumId: 'permian-1',
     src: 'https://i.pinimg.com/originals/5f/42/bf/5f42bf81c6b019faa841ee60f3310091.jpg',
   },

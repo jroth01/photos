@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
+import NotFound from '../NotFound';
 import Album from '../Album';
 import Home from '../Home';
 import Photo from '../Photo';
@@ -20,8 +21,9 @@ class AlbumSwitch extends Component {
       <div>
         <Switch location={location}>
           <Route exact path="/" component={Home} />
-          <Route exact path="/album/:albumId" component={Album} />
-          <Route exact path="/album/:albumId/photo/:photoId" component={Photo} />
+          <Route exact path="/album/:id" component={Album} />
+          <Route exact path="/album/:id/photo/:id" component={Photo} />
+          <Route component={NotFound}/>
         </Switch>
       </div>
     );

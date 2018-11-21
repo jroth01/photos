@@ -1,14 +1,14 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom'
-import Photo from '../Photo';
+import {Link } from 'react-router-dom'
+import NotFound from '../NotFound';
 import ALBUMS from '../../data/albums';
 import PHOTOS from '../../data/photos';
 
 const Album = ({match}) => {
   console.log(match);
-  let album = ALBUMS.find(album => album.id === match.params.albumId);
+  let album = ALBUMS.find(album => album.id.toString() === match.params.id);
   if (!album) {
-    return (<div>404 album not found :(</div>);
+    return (<NotFound resource={`Album ${match.params.id}`}/>);
   } else {
     let photos = PHOTOS.filter(photo => photo.albumId === album.id)
     return(
