@@ -20,7 +20,8 @@ class AlbumSwitch extends Component {
       <div>
         <Switch location={location}>
           <Route exact path="/" component={Home} />
-          <Route path="/album/:id" component={Album} />
+          <Route exact path="/album/:albumId" component={Album} />
+          <Route exact path="/album/:albumId/photo/:photoId" component={Photo} />
         </Switch>
       </div>
     );

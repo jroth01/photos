@@ -5,7 +5,8 @@ import ALBUMS from '../../data/albums';
 import PHOTOS from '../../data/photos';
 
 const Album = ({match}) => {
-  let album = ALBUMS.find(album => album.id === match.params.id);
+  console.log(match);
+  let album = ALBUMS.find(album => album.id === match.params.albumId);
   if (!album) {
     return (<div>404 album not found :(</div>);
   } else {
@@ -23,7 +24,6 @@ const Album = ({match}) => {
         </span>
         )}
         </div>
-        <Route path={`${match.path}/photos/:photoId`} component={Photo} />
       </div>
     );
   }
