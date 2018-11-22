@@ -1,20 +1,11 @@
 import React, {Component} from 'react'
 import { Switch, Route } from "react-router-dom";
-import NotFound from '../NotFound';
-import Album from '../Album';
-import Home from '../Home';
-import Photo from '../Photo';
+import NotFound from '../containers/NotFound';
+import Album from '../containers/Album';
+import Home from '../containers/Home';
+import Photo from '../containers/Photo';
 
 class AlbumSwitch extends Component {
-  previousLocation = this.props.location;
-  componentWillUpdate(nextProps) {
-    let { location } = this.props;
-    if (
-      nextProps.history.action !== "POP" && !location.state
-    ) {
-      this.previousLocation = this.props.location;
-    }
-  }
   render() {
     let { location } = this.props;
     return (

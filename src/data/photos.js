@@ -26,22 +26,26 @@ const PHOTOS = [
   },
   {
     id: 5,
+    name: 'Texas Flood',
     albumId: 'texas-1',
     src: 'https://www.nationalgeographic.com/content/dam/travel/2018-digital/ys-waterfalls/ys-waterfalls-05.adapt.1900.1.jpg',
   },
   {
     id: 6,
+    name: 'Oil Country',
     albumId: 'texas-1',
     src: 'https://www.nationalgeographic.com/content/dam/travel/2018-digital/ys-waterfalls/ys-waterfalls-06.adapt.1900.1.jpg',
   },
   {
     id: 7,
+    name: 'Southern Draw',
     albumId: 'texas-1',
     src: 'https://www.nationalgeographic.com/content/dam/travel/2018-digital/ys-waterfalls/ys-waterfalls-07.adapt.1900.1.jpg',
   },
   {
     id: 8,
     albumId: 'texas-1',
+    name: 'Tex Mex',
     src: 'https://www.nationalgeographic.com/content/dam/travel/2018-digital/ys-waterfalls/ys-waterfalls-08.adapt.1900.1.jpg',
   },
   {
