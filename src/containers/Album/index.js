@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {Link } from 'react-router-dom'
 import NotFound from '../NotFound';
-import ALBUMS from '../../data/albums';
-import PHOTOS from '../../data/photos';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import {
+  albumWithPhotosAsync,
+} from '../../modules/album';
 
 const AlbumHeader = ({album}) => (
   <div>
@@ -11,9 +15,9 @@ const AlbumHeader = ({album}) => (
   </div>
 );
 
-const ImageList = ({album, photos}) => (
+const ImageList = ({album}) => (
   <div>
-    {photos.map(photo => 
+    {album.photos.map(photo => 
       <span key={photo.id}>
         <Link to={`/album/${album.id}/photo/${photo.id}`}>
         <img width={200} height={200 / (16/9)} src={photo.src} />
@@ -23,20 +27,37 @@ const ImageList = ({album, photos}) => (
   </div>
 );
 
-const Album = ({match}) => {
-  const album = ALBUMS.find(album => album.id.toString() === match.params.id);
-  if (!album) {
-    return (<NotFound resource={`Album ${match.params.id}`}/>);
-  } else {
-    const photos = PHOTOS.filter(photo => photo.albumId === album.id)
-    return(
-      <div>
-        <AlbumHeader album={album}/>
-        <ImageList album={album} photos={photos}/>
-      </div>
-    );
+class Album2 extends Component {
+  constructor(props) {
+    super(props)
   }
-
+  componentDidMount() {
+    const { albumWithPhotosAsync, match } = this.props;
+    albumWithPhotosAsync(match.params.id);
+  }
+  render() {
+    const { match, data } = this.props;
+    const album = data;
+    if (!album) {
+      return (<NotFound resource={`Album ${match.params.id}`}/>);
+    } else {
+      return(
+        <div>
+          <AlbumHeader album={album}/>
+          {album.photos && <ImageList album={album}/>}
+        </div>
+      );
+    }
+  }
 }
 
-export default Album;
+const mapStateToProps = ({ album }) => ({
+  ...album
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({albumWithPhotosAsync},dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Album2);

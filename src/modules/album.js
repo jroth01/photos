@@ -1,20 +1,15 @@
+import ALBUM_DATA from '../data/albums';
+import PHOTO_DATA from '../data/photos';
+
 export const ALBUMS_ALL_REQUESTED = 'album/ALBUMS_ALL_REQUESTED'
 export const ALBUMS_ALL = 'album/ALBUMS'
 
-export const ALBUM_BY_ID_REQUESTED = 'album/ALBUM_BY_ID_REQUESTED'
-export const ALBUM_BY_ID = 'album/ALBUM_BY_ID'
-
-const updateLoader = (state, requestKey) => ({
-    ...state,
-    requestKey: !state[requestKey]
-});
+export const ALBUM_WITH_PHOTOS_REQUESTED = 'album/ALBUM_WITH_PHOTOS_REQUESTED'
+export const ALBUM_WITH_PHOTOS = 'album/ALBUM_WITH_PHOTOS'
 
 const initialState = {
-  id: 0,
-  parentId: 0,
-  albumsRequested: false,
-  albumByIdRequested: false,
-  isDecrementing: false,
+  data: [],
+  loading: false,
 }
 
 export default (state = initialState, action) => {
@@ -23,18 +18,26 @@ export default (state = initialState, action) => {
       return {
         ...state,
         id: action.parentId,
-        albumsRequested: true
+        loading: true
       }
     case ALBUMS_ALL:
-      return updateLoader(state, 'albumsRequested');
-    case ALBUM_BY_ID_REQUESTED:
+      return {
+        ...state,
+        data: action.data,
+        loading: !state.loading
+      }
+    case ALBUM_WITH_PHOTOS_REQUESTED:
       return {
         ...state,
         id: action.id,
         albumByIdRequested: true
       }
-    case ALBUM_BY_ID:
-     return updateLoader(state, 'albumByIdRequested');
+    case ALBUM_WITH_PHOTOS:
+     return {
+      ...state,
+      data: action.data,
+      albumsByIdRequested: state.albumsByIdRequested
+    }
     default:
       return state
   }
@@ -48,22 +51,39 @@ export const albumsAllAsync = () => {
 
     return setTimeout(() => {
       dispatch({
-        type: ALBUMS_ALL
+        type: ALBUMS_ALL,
+        data:  ALBUM_DATA,
       })
-    }, 3000)
+    }, 200)
   }
 }
 
-export const albumByIDAsync = () => {
+// Mock db join between album and media
+const fetchAlbumWithPhotos = (id) => {
+  let match = {};
+  const album = ALBUM_DATA.find(album => album.id === id);
+  let photos = [];
+  if (album) {
+    photos = PHOTO_DATA.filter(photo => photo.albumId === album.id);
+    match = { ...album, photos: photos}
+  } else {
+    match = {};
+  }
+  return match;
+}
+
+export const albumWithPhotosAsync = (id) => {
   return dispatch => {
     dispatch({
-      type: ALBUM_BY_ID_REQUESTED
-    })
-
+      type: ALBUM_WITH_PHOTOS_REQUESTED,
+      id: id,
+    });
     return setTimeout(() => {
+      let match = fetchAlbumWithPhotos(id);
       dispatch({
-        type: ALBUM_BY_ID
+        type: ALBUM_WITH_PHOTOS,
+        data: match,
       })
-    }, 3000)
+    }, 200)
   }
 }
