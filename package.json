@@ -1,9 +1,9 @@
 {
-  "private": true,
-  "homepage": "https://create-react-app-redux.now.sh",
+  "homepage": "https://jroth01.github.io/photos",
   "scripts": {
-    "deploy": "now && now alias",
-    "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "REACT_APP_GRAPHQL_SERVER=https://graphql-photos.herokuapp.com/ react-scripts start",
     "now-start": "serve -s ./build",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
@@ -17,6 +17,7 @@
   "dependencies": {
     "apollo-boost": "^0.1.22",
     "connected-react-router": "4.5.0",
+    "gh-pages": "^2.0.1",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
     "react": "16.6.3",
