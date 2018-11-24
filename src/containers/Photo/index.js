@@ -1,8 +1,18 @@
-import React from 'react';
+import React, {Component, Fragment} from 'react';
 import styled from 'styled-components';
 import NotFound from '../NotFound';
-import PHOTOS from '../../data/photos';
-import ALBUMS from '../../data/albums';
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
+
+export const PHOTO = (id) => gql`
+  query{
+    photo(id: "${id}"){
+      id
+      name
+      src
+    }
+  }
+`
 
 const Viewer = styled.div`
   height: 100vh;
@@ -26,20 +36,25 @@ const Image = ({photo}) => (
   </div>
 );
 
-const Photo = ({match}) => {
-  let photo = PHOTOS.find(photo => photo.id.toString() === match.params.id);
-  if (!photo) {
-    return (<NotFound resource={`Photo ${match.params.id}`}/>);
-  } else {
-    let albumId = photo.albumId; 
-    let album = ALBUMS.find(album => album.id === albumId);
-    return(
-      <Viewer>
-        <Image photo={photo}/>
-        <Btn disabled>previous</Btn>
-        <Btn disabled>next</Btn>
-      </Viewer>
-    );
+class Photo extends Component{
+  render() {
+    const id = this.props.match.params.id.toString()
+    return (<Query query={PHOTO(id)}>
+        {({ loading, error, data }) => {
+          if (loading) return <div>Fetching</div>
+          if (error) return <div>{error.message}</div>
+          if (!data.photo) return <NotFound/>
+          return (
+            <Fragment>
+              <Viewer>
+                <Image photo={data.photo}/>
+                <Btn disabled>previous</Btn>
+                <Btn disabled>next</Btn>
+              </Viewer>
+            </Fragment>
+          )
+        }}
+      </Query>)
   }
 }
 

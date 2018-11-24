@@ -8,9 +8,21 @@ export const ALBUM_WITH_PHOTOS_REQUESTED = 'album/ALBUM_WITH_PHOTOS_REQUESTED'
 export const ALBUM_WITH_PHOTOS = 'album/ALBUM_WITH_PHOTOS'
 
 const initialState = {
-  data: [],
+  cachedAlbums: new Map(),
+  cachedPhotos: new Map(),
+  albums: null,
+  photos: null,
   loading: false,
+  error: null,
 }
+
+const normalizedMap = (array) => {
+  let map = new Map();
+  array.forEach(object => {
+    map.set(object.id, object);
+  });
+  return map;
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -21,22 +33,24 @@ export default (state = initialState, action) => {
         loading: true
       }
     case ALBUMS_ALL:
+      const albums = normalizedMap(action.data);
       return {
         ...state,
-        data: action.data,
+        albums: Array.from(albums.values()),
         loading: !state.loading
       }
     case ALBUM_WITH_PHOTOS_REQUESTED:
       return {
         ...state,
         id: action.id,
-        albumByIdRequested: true
+        loading: true
       }
     case ALBUM_WITH_PHOTOS:
      return {
       ...state,
       data: action.data,
-      albumsByIdRequested: state.albumsByIdRequested
+      error: action.error,
+      loading: !state.loading
     }
     default:
       return state
@@ -47,28 +61,25 @@ export const albumsAllAsync = () => {
   return dispatch => {
     dispatch({
       type: ALBUMS_ALL_REQUESTED
-    })
-
+    });
     return setTimeout(() => {
       dispatch({
         type: ALBUMS_ALL,
         data:  ALBUM_DATA,
       })
-    }, 200)
+    }, 500);
   }
 }
 
 // Mock db join between album and media
 const fetchAlbumWithPhotos = (id) => {
-  let match = {};
+  let match = null;
   const album = ALBUM_DATA.find(album => album.id === id);
   let photos = [];
   if (album) {
     photos = PHOTO_DATA.filter(photo => photo.albumId === album.id);
     match = { ...album, photos: photos}
-  } else {
-    match = {};
-  }
+  } 
   return match;
 }
 
@@ -80,10 +91,18 @@ export const albumWithPhotosAsync = (id) => {
     });
     return setTimeout(() => {
       let match = fetchAlbumWithPhotos(id);
+      let error = null; 
+      if (!match) {
+        error = {
+          status: 404,
+          msg: `Album ${id} not found.`,
+        }
+      }
       dispatch({
         type: ALBUM_WITH_PHOTOS,
         data: match,
+        error: error,
       })
-    }, 200)
+    }, 500);
   }
 }

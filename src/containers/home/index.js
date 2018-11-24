@@ -1,56 +1,44 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, { Component, Fragment } from 'react'
+import {Link} from 'react-router-dom'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 
-import {
-  albumsAllAsync,
-} from '../../modules/album';
+export const ALBUMS_QUERY = gql`
+  query{
+    albums{
+      id
+      name
+      date
+    }
+  }
+`
 
-class AlbumList extends Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount() {
-    this.props.albumsAllAsync();
-  }
+class Home extends Component {
   render() {
-    const {loading, data} = this.props;
-    const albums = data;
-    if(loading) {
-      return (<div>Loading</div>)
-    }
-    if (!albums || !albums.length) {
-      return (<div>No albums found.</div>)
-    }
     return (
-      <ul>
-        {albums.map(album => 
-        <li key={album.id}>
-          <Link to={`/album/${album.id}`}>
-            {album.name} - <small>{album.date}</small>
-          </Link>
-        </li>
-        )}
-      </ul>
-    );
+      <Query query={ALBUMS_QUERY}>
+        {({ loading, error, data }) => {
+          if (loading) return <div>Fetching</div>
+          if (error) return <div>{error.message}</div>
+          if (!data.albums) return <div>No albums</div>
+          return (
+            <Fragment>
+              <h1 style={{margin:0}}>Albums</h1>
+              <ul>
+                {data.albums.map(album => 
+                <li key={album.id}>
+                  <Link to={`/album/${album.id}`}>
+                    {album.name} - <small>{album.date}</small>
+                  </Link>
+                </li>
+                )}
+              </ul>
+            </Fragment>
+          )
+        }}
+      </Query>
+    )
   }
 }
 
-const Home = (props) => (
-  <div>
-    <h1 style={{margin:0}}>Albums</h1>
-    <AlbumList {...props}/>
-  </div>
-);
-
-const mapStateToProps = ({ album }) => ({
-  ...album
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({albumsAllAsync},dispatch);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
+export default Home
