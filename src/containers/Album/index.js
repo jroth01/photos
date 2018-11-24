@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {Link } from 'react-router-dom'
+import styled from 'styled-components';
 import NotFound from '../NotFound';
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -25,12 +26,20 @@ const AlbumHeader = ({album}) => (
   </div>
 );
 
+const WIDTH = 300;
+
+const Image = styled.img`
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+`
+
 const ImageList = ({album}) => (
   <div>
     {album.photos.map(photo => 
       <span key={photo.id}>
         <Link to={`/album/${album.id}/photo/${photo.id}`}>
-        <img width={200} height={200 / (16/9)} src={photo.src} />
+        <Image width={WIDTH} height={WIDTH / (16/9)} src={photo.src} />
         </Link>
       </span>
     )}
