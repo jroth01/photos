@@ -30,9 +30,11 @@ const Btn = styled.button`
   margin: 8px;
 `;
 
+const WIDTH = '100%';
+
 const Image = ({photo}) => (
   <div>
-    <Img key={photo.id} width={200} height={200/ (16/9)} src={photo.src} /> 
+    <Img key={photo.id} width={WIDTH} src={photo.src} /> 
   </div>
 );
 
