@@ -1,9 +1,6 @@
 {
-  "homepage": "https://jroth01.github.io/photos",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "REACT_APP_GRAPHQL_SERVER=https://graphql-photos.herokuapp.com/ react-scripts start",
+    "start": "react-scripts start",
     "now-start": "serve -s ./build",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
