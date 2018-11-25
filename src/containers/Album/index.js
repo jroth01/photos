@@ -28,7 +28,7 @@ const AlbumHeader = ({album}) => (
   </div>
 );
 
-const WIDTH = 200;
+const WIDTH = 300;
 
 const Wrapper = styled.span`
   overflow: hidden;
@@ -42,7 +42,6 @@ const Image = styled.img`
   // max-width: 200px;
   // height:auto;
 `
-
 
 class ProgressiveImg extends Component {
   constructor(props) {
