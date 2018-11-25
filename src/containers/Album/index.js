@@ -58,7 +58,7 @@ class ProgressiveImg extends Component {
     const {photo} = this.props;
     return (
       <Wrapper>
-        <Image width= {WIDTH} height={WIDTH /(16/9)} {...this.state} onLoad={() => this.setLoaded()} hidden={!this.state.loaded} src={photo.src} />
+        <Image width= {WIDTH} height={WIDTH /(16/9)} {...this.state} onLoad={() => this.setLoaded()} hidden={!this.state.loaded} src={photo.thumb || photo.src} />
         <Image width= {WIDTH} height={WIDTH /(16/9)}  {...this.state} hidden={this.state.loaded} src={photo.avatar} />
       </Wrapper>
     );
