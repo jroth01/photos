@@ -14,6 +14,8 @@ export const ALBUM = (id) => gql`
       photos {
         id
         src
+        avatar
+        thumb
       }
     }
   }
@@ -26,25 +28,56 @@ const AlbumHeader = ({album}) => (
   </div>
 );
 
-const WIDTH = 300;
+const WIDTH = 200;
+
+const Wrapper = styled.span`
+  overflow: hidden;
+  position: relative;
+`;
+
 
 const Image = styled.img`
-  width: 100%;
-  max-width: 300px;
-  height: auto;
+  // width: 100%;
+  padding: 8px;
+  // max-width: 200px;
+  // height:auto;
 `
 
-const ImageList = ({album}) => (
+
+class ProgressiveImg extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false,
+    }
+  }
+  setLoaded = () => {
+    this.setState({loaded: true});
+  }
+  render() {
+    const {photo} = this.props;
+    return (
+      <Wrapper>
+        <Image width= {WIDTH} height={WIDTH /(16/9)} {...this.state} onLoad={() => this.setLoaded()} hidden={!this.state.loaded} src={photo.src} />
+        <Image width= {WIDTH} height={WIDTH /(16/9)}  {...this.state} hidden={this.state.loaded} src={photo.avatar} />
+      </Wrapper>
+    );
+  }
+}
+
+const ImageList = ({album}) => {
+  return (
   <div>
     {album.photos.map(photo => 
       <span key={photo.id}>
         <Link to={`/album/${album.id}/photo/${photo.id}`}>
-        <Image width={WIDTH} height={WIDTH / (16/9)} src={photo.src} />
+        <ProgressiveImg photo={photo}/>
+        {/* <Image width={WIDTH} height={WIDTH / (16/9)} src={photo.thumb || photo.src} /> */}
         </Link>
       </span>
     )}
   </div>
-);
+)};
 
 class Album extends Component {
   render() {
