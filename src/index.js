@@ -28,11 +28,11 @@ const target = document.querySelector('#root')
 
 render(
   <ApolloProvider client={client}>
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <App/>
-    </ConnectedRouter>
-  </Provider>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <App/>
+      </ConnectedRouter>
+    </Provider>
   </ApolloProvider>,
   target
 )
