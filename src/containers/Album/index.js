@@ -1,8 +1,7 @@
 import React, {Component, Fragment} from 'react';
-import NotFound from '../NotFound';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-
+import NotFound from '../NotFound';
 import Heading from '../../components/Heading';
 import ImageList from '../../components/ImageList';
 
@@ -25,7 +24,8 @@ export const ALBUM_BY_ID = (id) => gql`
 class Album extends Component {
   render() {
     const id = this.props.match.params.id.toString();
-    return (<Query query={ALBUM_BY_ID(id)}>
+    return (
+      <Query query={ALBUM_BY_ID(id)}>
         {({ loading, error, data }) => {
           if (loading) return <div>Fetching</div>
           if (error) {

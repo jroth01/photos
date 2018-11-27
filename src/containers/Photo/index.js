@@ -1,8 +1,8 @@
 import React, {Component, Fragment} from 'react';
-import styled from 'styled-components';
 import NotFound from '../NotFound';
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+import ImageViewer from '../../components/ImageViewer';
 
 export const PHOTO = (id) => gql`
   query{
@@ -19,24 +19,6 @@ export const PHOTO = (id) => gql`
       }
     }
   }
-`
-
-const Img = styled.img`
-  width: 100%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-`;
-
-const Image = ({photo}) => (
-  <div>
-    <Img key={photo.id} src={photo.src} /> 
-  </div>
-);
-
-const Viewer = styled.div`
-  height: 100vh;
-  text-align:center;
 `;
 
 class Photo extends Component{
@@ -50,9 +32,7 @@ class Photo extends Component{
           if (!data.photo) return <NotFound/>
           return (
             <Fragment>
-              <Viewer>
-                <Image {...data} {...this.props}/>
-              </Viewer>
+              <ImageViewer {...data} {...this.props}/>
             </Fragment>
           )
         }}
